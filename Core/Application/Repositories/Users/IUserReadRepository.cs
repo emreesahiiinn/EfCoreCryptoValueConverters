@@ -3,6 +3,6 @@ using Domain.Entities;
 
 namespace Application.Repositories.Users;
 
-public interface IUserReadRepository : IRepository<User>
+public interface IUserReadRepository : IReadRepository<User>
 {
 }
