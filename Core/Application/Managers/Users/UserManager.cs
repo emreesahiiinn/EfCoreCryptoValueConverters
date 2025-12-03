@@ -6,8 +6,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Managers.Users;
 
+/// <summary>
+///     Manages business logic and operations for user entities.
+/// </summary>
+/// <remarks>
+///     This manager orchestrates user CRUD operations and handles the mapping
+///     between domain entities and DTOs. Encryption/decryption of sensitive
+///     data is handled transparently by the data access layer.
+/// </remarks>
 public class UserManager(IUserReadRepository readRepository, IUserWriteRepository writeRepository) : IUserManager
 {
+    /// <inheritdoc />
     public async Task<UserResponse> CreateUserAsync(CreateUserRequest request)
     {
         var user = new User
@@ -28,13 +37,13 @@ public class UserManager(IUserReadRepository readRepository, IUserWriteRepositor
 
     public async Task<UserResponse?> GetUserByIdAsync(Guid id)
     {
-        var user = await readRepository.GetByIdAsync(id.ToString(), tracking: false);
+        var user = await readRepository.GetByIdAsync(id.ToString(), false);
         return user == null ? null : MapToResponse(user);
     }
 
     public async Task<List<UserResponse>> GetAllUsersAsync()
     {
-        var users = await readRepository.GetAll(tracking: false).ToListAsync();
+        var users = await readRepository.GetAll(false).ToListAsync();
         return users.Select(MapToResponse).ToList();
     }
 
